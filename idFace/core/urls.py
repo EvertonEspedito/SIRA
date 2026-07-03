@@ -8,7 +8,9 @@ dashboard,
  sair,
  cadastro_visitante,
  cadastro_aluno,
- cadastro_about
+ cadastro_about,
+ sobre_nos,
+ capturar_face,
 )
 urlpatterns = [
 
@@ -22,6 +24,8 @@ urlpatterns = [
     path('cadastro-visitante/', cadastro_visitante, name='cadastro_visitante'),
     path('cadastro-aluno/', cadastro_aluno, name='cadastro_aluno'),
     path('cadastro-about/', cadastro_about, name='cadastro_about'),
+    path('sobre/', sobre_nos, name='sobre'),
+    path("capturar-face/<int:id>/",capturar_face,name="capturar_face"),
 ]
 
 urlpatterns += static(

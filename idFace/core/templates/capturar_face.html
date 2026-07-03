@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Captura Facial</title>
+
+</head>
+
+    <body>
+
+        <h1>Cadastro Facial</h1>
+
+        <h2>{{ pessoa.nome }}</h2>
+
+        <p>
+
+            Clique abaixo para iniciar a captura.
+
+        </p>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <button>
+
+                Iniciar Captura
+
+            </button>
+
+        </form>
+
+    </body>
+
+</html>

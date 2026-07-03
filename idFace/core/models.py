@@ -50,7 +50,9 @@ class Pessoa(models.Model):
     )
 
     foto = models.ImageField(
-        upload_to="rostos/"
+        upload_to="rostos/",
+        blank=True,
+        null=True
     )
 
     embedding = models.JSONField(
