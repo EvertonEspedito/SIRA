@@ -88,26 +88,48 @@ def cadastro_aluno(request):
 
     if request.method == "POST":
 
-        matricula = request.POST.get("matricula")
-        nome = request.POST.get("nome")
-        sobrenome = request.POST.get("sobrenome")
-        email = request.POST.get("email")
+        pessoa = Pessoa.objects.create(
 
-        Pessoa.objects.create(
-            nome=f"{nome} {sobrenome}",
-            tipo="ALUNO",
-            matricula=matricula,
-            email=email
+            nome=request.POST["nome"] + " " + request.POST["sobrenome"],
+
+            matricula=request.POST["matricula"],
+
+            email=request.POST["email"],
+
+            tipo="ALUNO"
+
         )
 
-        messages.success(
-            request,
-            "Aluno cadastrado com sucesso!"
+        return redirect(
+            "capturar_face",
+            pessoa.id
         )
 
-        return redirect("cadastro_aluno")
-
-    return render(request, "cadastro_aluno.html")
+    return render(
+        request,
+        "cadastro_aluno.html"
+    )
 
 def cadastro_about(request):
     return render(request, 'cadastro_about.html')
+
+def capturar_face(request, id):
+
+    pessoa = Pessoa.objects.get(id=id)
+
+    return render(
+
+        request,
+
+        "capturar_face.html",
+
+        {
+
+            "pessoa": pessoa
+
+        }
+
+    )
+
+def sobre_nos(request):
+    return render(request, 'sobre_nos.html')

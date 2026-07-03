@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIRA - Sobre nós</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=10">
+    
+</head>
+<body>
+    <style>
+        .content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .content h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        .content p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+    </style>
+    <div class="container"> 
+        <div class="left-side">
+            <header>
+                <h1>SIRA</h1>
+                <nav>
+                    <a href="login">Inicio</a>
+                    <a href="#" class="active">Sobre nós</a>
+                    <a href="#">Contatos</a>
+                </nav>
+            </header>
+            <div class="content">
+                <h2>Sobre nós</h2>
+                <p>
+                    Bem-vindo ao SIRA, o Sistema de Identificação e Registro Automatizado. 
+                    Nosso objetivo é fornecer uma solução eficiente e segura para o gerenciamento de registros e identificação de indivíduos.
+                </p>
+                <p>
+                    Com tecnologia avançada de reconhecimento facial, o SIRA permite capturar e armazenar informações de forma rápida e precisa, garantindo a integridade dos dados.
+                </p>
+                <p>
+                    Nossa equipe está comprometida em oferecer suporte contínuo e melhorias constantes para atender às necessidades dos nossos usuários.
+                </p>
+            </div>
+        </div>
+        <div class="right-side">
+            
+            <img
+                src="{% static 'img/foto-visãocomputacional.jpg' %}"
+                alt="Estudante"
+            >
+        </div>
+    </div>
+</body>
+</html>

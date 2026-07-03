@@ -9,3 +9,15 @@
         - Everton
     ## pass
         - IFSERTAO2026@
+
+# Aluno Teste 
+
+    ## Name Aluno
+        - Matricula: 
+           -> 20250100429
+        - Nome:
+           -> Everton Espedito
+        - sobrenome:
+           -> Silva Santos
+        - Email:
+            -> everton.espedito@aluno.ifsertao-pe.edu.br
