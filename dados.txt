@@ -1,0 +1,11 @@
+#superuser
+    ##name
+        -admin
+    ##pass
+        -12345
+
+# Pessoa que vai administrar:
+    ## NameUser
+        - Everton
+    ## pass
+        - IFSERTAO2026@
