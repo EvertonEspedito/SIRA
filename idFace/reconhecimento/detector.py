@@ -1,50 +1,35 @@
-import numpy as np
-
-from core.models import Pessoa
+import cv2
 
 
-LIMIAR = 0.75
+class Detector:
 
+    def __init__(self):
 
-def comparar(embeddingAtual):
-
-    pessoas = Pessoa.objects.filter(
-        ativo=True
-    ).exclude(
-        embedding=None
-    )
-
-    melhorPessoa = None
-
-    menorDistancia = 999
-
-    for pessoa in pessoas:
-
-        embeddingBanco = np.array(
-            pessoa.embedding
+        self.classificador = cv2.CascadeClassifier(
+            cv2.data.haarcascades +
+            "haarcascade_frontalface_default.xml"
         )
 
-        distancia = np.linalg.norm(
+    def detectar(self, frame):
 
-            embeddingAtual -
-
-            embeddingBanco
-
+        cinza = cv2.cvtColor(
+            frame,
+            cv2.COLOR_BGR2GRAY
         )
 
-        if distancia < menorDistancia:
-
-            menorDistancia = distancia
-
-            melhorPessoa = pessoa
-
-    if menorDistancia < LIMIAR:
-
-        confianca = max(
-            0,
-            100 - menorDistancia*100
+        faces = self.classificador.detectMultiScale(
+            cinza,
+            scaleFactor=1.2,
+            minNeighbors=5,
+            minSize=(120, 120)
         )
 
-        return melhorPessoa, confianca
+        return faces, cinza
 
-    return None, 0
+
+detector = Detector()
+
+
+def detectar(frame):
+
+    return detector.detectar(frame)

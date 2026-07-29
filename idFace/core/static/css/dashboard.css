@@ -29,7 +29,7 @@ body{
 }
 
 .saldo{
-    background:#4c008b;
+    background:#4b0f82;
     padding:20px;
     border-radius:12px;
     margin-bottom:40px;
@@ -163,4 +163,159 @@ header{
 
 .card h2{
     margin-bottom:8px;
+}
+
+/* ===================================
+   TABELA
+=================================== */
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+    background:#fff;
+    border-radius:12px;
+    overflow:hidden;
+
+}
+
+thead{
+
+    background:#4b0f82;
+    color:#fff;
+
+}
+
+th{
+
+    padding:15px;
+    text-align:left;
+    font-weight:bold;
+
+}
+
+td{
+
+    padding:15px;
+    border-bottom:1px solid #ececec;
+
+}
+
+tbody tr:hover{
+
+    background:#f8f6fd;
+
+}
+
+/* ===================================
+   LINKS DOS CARDS
+=================================== */
+
+.card a{
+
+    display:block;
+    text-decoration:none;
+    color:#111;
+    font-weight:bold;
+    text-align:center;
+
+}
+
+.card a:hover{
+
+    color:#4b0f82;
+
+}
+
+.card a i{
+
+    font-size:45px;
+    color:#4b0f82;
+    margin-bottom:12px;
+
+}
+
+/* ===================================
+   MENSAGENS
+=================================== */
+
+.mensagem{
+
+    padding:16px;
+    margin:20px 0;
+    border-radius:10px;
+    font-weight:bold;
+
+}
+
+.mensagem.success{
+
+    background:#d4edda;
+    color:#155724;
+    border-left:5px solid #28a745;
+
+}
+
+.mensagem.error{
+
+    background:#f8d7da;
+    color:#721c24;
+    border-left:5px solid #dc3545;
+
+}
+
+.mensagem.warning{
+
+    background:#fff3cd;
+    color:#856404;
+    border-left:5px solid #ffc107;
+
+}
+
+.mensagem.info{
+
+    background:#d1ecf1;
+    color:#0c5460;
+    border-left:5px solid #17a2b8;
+
+}
+
+/* ===================================
+   RESPONSIVIDADE
+=================================== */
+
+@media(max-width:900px){
+
+    .dashboard{
+
+        flex-direction:column;
+
+    }
+
+    .sidebar{
+
+        width:100%;
+
+    }
+
+    .cards{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .content{
+
+        padding:20px;
+
+    }
+
+    table{
+
+        display:block;
+        overflow-x:auto;
+
+    }
+
 }

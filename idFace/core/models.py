@@ -37,11 +37,6 @@ class Pessoa(models.Model):
         null=True
     )
 
-    empresa = models.CharField(
-        max_length=150,
-        blank=True,
-        null=True
-    )
 
     motivo_visita = models.CharField(
         max_length=200,

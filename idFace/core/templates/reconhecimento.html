@@ -1,0 +1,273 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SIRA - Reconhecimento Facial</title>
+
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        .camera-container{
+
+            display:flex;
+            justify-content:center;
+            margin-top:30px;
+
+        }
+
+        video{
+
+            width:700px;
+            max-width:100%;
+            border-radius:12px;
+            border:3px solid #2c3e50;
+            background:#000;
+
+        }
+
+        .resultado{
+
+            margin-top:25px;
+            text-align:center;
+
+        }
+
+        .resultado h2{
+
+            color:#2c3e50;
+
+        }
+
+        .resultado p{
+
+            font-size:18px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+
+        <h2>SIRA</h2>
+
+        <div class="menu">
+
+            <h4>MENU</h4>
+
+            <a href="{% url 'dashboard' %}">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+
+            <a href="{% url 'cadastro_aluno' %}">
+                <i class="fa-solid fa-user-graduate"></i>
+                Cadastro de Alunos
+            </a>
+
+            <a href="{% url 'cadastro_visitante' %}">
+                <i class="fa-solid fa-user"></i>
+                Cadastro de Visitantes
+            </a>
+
+            <a href="{% url 'reconhecimento' %}">
+                <i class="fa-solid fa-camera"></i>
+                Reconhecimento Facial
+            </a>
+
+            <a href="{% url 'sobre_nos' %}">
+                <i class="fa-solid fa-circle-info"></i>
+                Sobre
+            </a>
+
+            <a href="{% url 'logout' %}">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Sair
+            </a>
+
+        </div>
+
+    </aside>
+
+    <main class="content">
+
+        <header>
+
+            <h2>Reconhecimento Facial</h2>
+
+        </header>
+
+        <div class="camera-container">
+
+            <video
+                id="video"
+                autoplay
+                playsinline
+                muted>
+            </video>
+
+        </div>
+
+        <canvas
+            id="canvas"
+            style="display:none;">
+        </canvas>
+
+        <div class="resultado">
+
+            <h2 id="nome">
+                Aguardando reconhecimento...
+            </h2>
+
+            <p id="tipo"></p>
+
+            <p id="confianca"></p>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const nome = document.getElementById("nome");
+const tipo = document.getElementById("tipo");
+const confianca = document.getElementById("confianca");
+
+let stream = null;
+let intervalo = null;
+
+let ultimoReconhecido = "";
+let ultimoHorario = 0;
+
+async function iniciarCamera() {
+
+    try {
+
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false
+        });
+
+        video.srcObject = stream;
+
+        intervalo = setInterval(reconhecer, 2000);
+
+    } catch (erro) {
+
+        console.error(erro);
+
+        alert("Não foi possível acessar a câmera.");
+
+    }
+
+}
+
+function reconhecer() {
+
+    if (!video.videoWidth) return;
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const contexto = canvas.getContext("2d");
+
+    contexto.drawImage(
+        video,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    const imagem = canvas.toDataURL("image/jpeg");
+
+    fetch("{% url 'reconhecer' %}", {
+
+        method: "POST",
+
+        headers: {
+
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}"
+
+        },
+
+        body: JSON.stringify({
+
+            imagem: imagem
+
+        })
+
+    })
+
+    .then(res => res.json())
+
+    .then(dados => {
+
+        if(dados.status==="SUCESSO"){
+
+            const agora = Date.now();
+
+            if(
+                ultimoReconhecido===dados.nome &&
+                (agora-ultimoHorario)<5000
+            ){
+                return;
+            }
+
+            ultimoReconhecido=dados.nome;
+            ultimoHorario=agora;
+
+            nome.textContent=dados.nome;
+            tipo.textContent="Tipo: "+dados.tipo;
+            confianca.textContent="Confiança: "+dados.confianca;
+
+        }
+
+        else{
+
+            nome.textContent="Pessoa não encontrada";
+            tipo.textContent="";
+            confianca.textContent="";
+
+        }
+
+    })
+
+    .catch(error=>{
+
+        console.error(error);
+
+        nome.textContent="Erro ao reconhecer.";
+
+    });
+
+}
+
+window.onload=iniciarCamera;
+
+</script>
+
+</body>
+
+</html>

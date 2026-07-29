@@ -1,120 +1,239 @@
-    {% load static %}
-    <!DOCTYPE html>
-    <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <title>Dashboard</title>
-        <link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=10">
+{% load static %}
 
-        <!-- Icons -->
-        <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    </head>
-    <body>
+<!DOCTYPE html>
+<html lang="pt-br">
 
-    <div class="dashboard">
+<head>
 
-        <!-- MENU -->
-        <aside class="sidebar">
+    <meta charset="UTF-8">
 
-            <h2>DASHBOARD</h2>
+    <title>SIRA - Dashboard</title>
 
-            <div class="saldo">
-                <span>Total</span>
-                <h3>1000</h3>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- MENU -->
+
+    <aside class="sidebar">
+
+        <h2>SIRA</h2>
+
+        <div class="saldo">
+
+            <p>Pessoas cadastradas</p>
+
+            <h3>{{ totalPessoas }}</h3>
+
+        </div>
+
+        <div class="menu">
+
+            <h4>MENU</h4>
+
+            <a href="{% url 'dashboard' %}">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+
+            <a href="{% url 'cadastro_aluno' %}">
+                <i class="fa-solid fa-user-graduate"></i>
+                Cadastro de Alunos
+            </a>
+
+            <a href="{% url 'cadastro_visitante' %}">
+                <i class="fa-solid fa-user"></i>
+                Cadastro de Visitantes
+            </a>
+
+            <a href="{% url 'reconhecimento' %}">
+                <i class="fa-solid fa-camera"></i>
+                Reconhecimento Facial
+            </a>
+
+            <a href="{% url 'sobre_nos' %}">
+                <i class="fa-solid fa-circle-info"></i>
+                Sobre
+            </a>
+
+        </div>
+
+        <div class="usuario">
+
+            <h4>CONTA</h4>
+
+            <a href="{% url 'logout' %}">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Sair
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- CONTEÚDO -->
+
+    <main class="content">
+
+        <header>
+
+            <h2>Dashboard</h2>
+
+            <div class="admin">
+
+                <i class="fa-solid fa-user-circle"></i>
+
+                Administrador
+
             </div>
 
-            <div class="menu">
-                <h4>Menu</h4>
+        </header>
 
-                <a href="cadastro-aluno/"><i class="fa-solid fa-grip"></i> Cadastro de alunos</a>
+        <section class="resumo">
 
-                <a href="#"><i class="fa-solid fa-clock-rotate-left"></i> Relatórios</a>
+            <h3>Resumo do Sistema</h3>
 
-                <a href="#"><i class="fa-solid fa-wallet"></i> Histórico</a>
+            <div class="cards">
 
-                <a href="login"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                <div class="card">
+
+                    <h2>{{ totalPessoas }}</h2>
+
+                    <p>Pessoas Cadastradas</p>
+
+                </div>
+
+                <div class="card">
+
+                    <h2>{{ totalHoje }}</h2>
+
+                    <p>Presenças Hoje</p>
+
+                </div>
+
             </div>
 
-            <div class="usuario">
-                <h4>xxxxxxxxxx</h4>
+        </section>
 
-                <a href="#"><i class="fa-regular fa-circle-question"></i> Dúvida/Suporte</a>
+        <br>
 
-                <a href="#"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</a>
+        <section class="resumo">
+
+            <h3>Ações</h3>
+
+            <div class="cards">
+
+                <div class="card">
+                    <a href="{% url 'cadastro_aluno' %}">
+                        <i class="fa-solid fa-user-graduate"></i><br><br>
+                        Cadastrar Aluno
+                    </a>
+                </div>
+
+                <div class="card">
+                    <a href="{% url 'cadastro_visitante' %}">
+                        <i class="fa-solid fa-user"></i><br><br>
+                        Cadastrar Visitante
+                    </a>
+                </div>
+
+                <div class="card">
+                    <a href="{% url 'reconhecimento' %}">
+                        <i class="fa-solid fa-camera"></i><br><br>
+                        Reconhecimento Facial
+                    </a>
+                </div>
+
+                <div class="card">
+                    <a href="{% url 'sobre_nos' %}">
+                        <i class="fa-solid fa-circle-info"></i><br><br>
+                        Sobre o Sistema
+                    </a>
+                </div>
+
             </div>
 
-        </aside>
+        </section>
 
-        <!-- CONTEÚDO -->
-        <main class="content">
+        <br>
 
-            <header>
+        {% if messages %}
 
-                <div class="search-box">
-                    <input type="text" placeholder="Pesquisar aluno, matrícula...">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </div>
+            {% for message in messages %}
 
-                <div class="top-icons">
-                    <i class="fa-solid fa-bell"></i>
-                    <i class="fa-solid fa-comment-dots"></i>
-                </div>
+                <div class="mensagem {{ message.tags }}">
 
-                <div class="admin">
-                    <span>Administrador</span>
-                    <i class="fa-solid fa-user"></i>
-                </div>
-
-            </header>
-
-            <!-- GRÁFICO -->
-            <section class="grafico">
-
-                <h3>ALUNOS CADASTRADOS</h3>
-
-                <div class="grafico-area">
+                    {{ message }}
 
                 </div>
 
-            </section>
+            {% endfor %}
 
-            <!-- RESUMO -->
-            <section class="resumo">
+        {% endif %}
 
-                <div class="titulo">
-                    <h3>RESUMO ACADÊMICO</h3>
-                </div>
+        <section class="resumo">
 
-                <div class="cards">
+            <h3>Últimas Presenças</h3>
 
-                    <div class="card">
-                        <h2>ADS</h2>
-                        <p>120 alunos</p>
-                    </div>
+            <table>
 
-                    <div class="card">
-                        <h2>Informática</h2>
-                        <p>120 alunos</p>
-                    </div>
+                <thead>
 
-                    <div class="card">
-                        <h2>Ensino Médio</h2>
-                        <p>120 alunos</p>
-                    </div>
+                    <tr>
 
-                    <div class="card">
-                        <h2>Visitantes</h2>
-                        <p>120 alunos</p>
-                    </div>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Data</th>
 
-                </div>
+                    </tr>
 
-            </section>
+                </thead>
 
-        </main>
+                <tbody>
 
-    </div>
+                {% for presenca in ultimasPresencas %}
 
-    </body>
-    </html>
+                    <tr>
+
+                        <td>{{ presenca.pessoa.nome }}</td>
+
+                        <td>{{ presenca.pessoa.tipo }}</td>
+
+                        <td>{{ presenca.data_hora|date:"d/m/Y H:i" }}</td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="3">
+
+                            Nenhuma presença registrada.
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

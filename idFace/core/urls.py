@@ -1,34 +1,62 @@
 from django.urls import path
-from django.conf import settings
-from django.conf.urls.static import static
+from . import views
 
-from .views import(
-dashboard,
- login,
- sair,
- cadastro_visitante,
- cadastro_aluno,
- cadastro_about,
- sobre_nos,
- capturar_face,
-)
 urlpatterns = [
 
     path(
-        '',
-        dashboard,
-        name='dashboard'
+        "",
+        views.login,
+        name="login"
     ),
-    path('login/', login, name='login'),
-    path('logout/',sair,name='logout'),
-    path('cadastro-visitante/', cadastro_visitante, name='cadastro_visitante'),
-    path('cadastro-aluno/', cadastro_aluno, name='cadastro_aluno'),
-    path('cadastro-about/', cadastro_about, name='cadastro_about'),
-    path('sobre/', sobre_nos, name='sobre'),
-    path("capturar-face/<int:id>/",capturar_face,name="capturar_face"),
-]
 
-urlpatterns += static(
-    settings.MEDIA_URL,
-    document_root=settings.MEDIA_ROOT
-)
+    path(
+        "dashboard/",
+        views.dashboard,
+        name="dashboard"
+    ),
+
+    path(
+        "logout/",
+        views.sair,
+        name="logout"
+    ),
+
+    path(
+        "cadastro/aluno/",
+        views.cadastro_aluno,
+        name="cadastro_aluno"
+    ),
+
+    path(
+        "cadastro/visitante/",
+        views.cadastro_visitante,
+        name="cadastro_visitante"
+    ),
+
+    path(
+        "cadastro/about/",
+        views.cadastro_about,
+        name="cadastro_about"
+    ),
+
+    path(
+        "sobre/",
+        views.sobre_nos,
+        name="sobre_nos"
+    ),
+
+   
+
+    path(
+        "reconhecimento/",
+        views.reconhecimento,
+        name="reconhecimento"
+    ),
+
+    path(
+        "api/reconhecer/",
+        views.reconhecer,
+        name="reconhecer"
+    ),
+
+]
