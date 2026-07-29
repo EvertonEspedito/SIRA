@@ -1,38 +1,91 @@
+{% load static %}
+
 <!DOCTYPE html>
+
 <html lang="pt-br">
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <title>Captura Facial</title>
+<title>Reconhecimento Facial</title>
 
 </head>
 
-    <body>
+<body>
 
-        <h1>Cadastro Facial</h1>
+<h2>Reconhecimento Facial</h2>
 
-        <h2>{{ pessoa.nome }}</h2>
+<video
+    id="camera"
+    width="640"
+    height="480"
+    autoplay
+></video>
 
-        <p>
+<canvas
+    id="canvas"
+    width="640"
+    height="480"
+    style="display:none"
+></canvas>
 
-            Clique abaixo para iniciar a captura.
+<p id="resultado"></p>
 
-        </p>
+<script>
 
-        <form method="post">
+const video = document.getElementById("camera");
 
-            {% csrf_token %}
+navigator.mediaDevices
+.getUserMedia({video:true})
+.then(stream=>{
 
-            <button>
+    video.srcObject = stream;
 
-                Iniciar Captura
+});
 
-            </button>
+const canvas = document.getElementById("canvas");
 
-        </form>
+setInterval(()=>{
 
-    </body>
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(video,0,0);
+
+    const imagem = canvas.toDataURL("image/jpeg");
+
+    fetch("/reconhecer/",{
+
+        method:"POST",
+
+        headers:{
+
+            "Content-Type":"application/json",
+
+            "X-CSRFToken":"{{ csrf_token }}"
+
+        },
+
+        body:JSON.stringify({
+
+            imagem:imagem
+
+        })
+
+    })
+
+    .then(r=>r.json())
+
+    .then(d=>{
+
+        document.getElementById("resultado").innerHTML=d.nome;
+
+    });
+
+},1000);
+
+</script>
+
+</body>
 
 </html>

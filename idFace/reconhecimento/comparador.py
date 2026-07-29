@@ -3,39 +3,77 @@ import numpy as np
 from core.models import Pessoa
 
 
-LIMIAR = 0.75
+# Limiar para reconhecimento
+LIMIAR = 1.0
 
 
 def comparar(embedding):
 
-    melhorPessoa = None
+    embedding = np.array(embedding)
 
-    menorDistancia = 999
+    melhor_pessoa = None
+    menor_distancia = float("inf")
 
-    pessoas = Pessoa.objects.filter(
-        ativo=True
-    ).exclude(
-        embedding=None
+    pessoas = (
+        Pessoa.objects
+        .filter(ativo=True)
+        .exclude(embedding=None)
     )
+
+    if not pessoas.exists():
+        print("Nenhuma pessoa cadastrada.")
+        return None, None
+
+    print("\n========== INICIANDO COMPARAÇÃO ==========")
 
     for pessoa in pessoas:
 
-        distancia = np.linalg.norm(
+        try:
 
-            embedding -
+            embedding_pessoa = np.array(pessoa.embedding)
 
-            np.array(pessoa.embedding)
+            if embedding.shape != embedding_pessoa.shape:
 
-        )
+                print(
+                    f"{pessoa.nome}: embeddings incompatíveis "
+                    f"{embedding.shape} x {embedding_pessoa.shape}"
+                )
 
-        if distancia < menorDistancia:
+                continue
 
-            menorDistancia = distancia
+            distancia = np.linalg.norm(
+                embedding - embedding_pessoa
+            )
 
-            melhorPessoa = pessoa
+            print(
+                f"{pessoa.nome} -> Distância: {distancia:.4f}"
+            )
 
-    if menorDistancia < LIMIAR:
+            if distancia < menor_distancia:
 
-        return melhorPessoa, menorDistancia
+                menor_distancia = distancia
+                melhor_pessoa = pessoa
 
-    return None, menorDistancia
+        except Exception as erro:
+
+            print(
+                f"Erro ao comparar {pessoa.nome}: {erro}"
+            )
+
+    print("----------------------------------")
+
+    if melhor_pessoa:
+
+        print(f"Melhor pessoa: {melhor_pessoa.nome}")
+        print(f"Menor distância: {menor_distancia:.4f}")
+        print(f"Limiar: {LIMIAR}")
+
+        if menor_distancia <= LIMIAR:
+
+            print(">>> PESSOA RECONHECIDA <<<\n")
+
+            return melhor_pessoa, menor_distancia
+
+    print(">>> PESSOA NÃO RECONHECIDA <<<\n")
+
+    return None, None
